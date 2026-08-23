@@ -1,0 +1,21 @@
+{
+  "support_name": "SiO2",
+  "support_mass_g": 10.0,
+  "method": "wet_impregnation",
+  "solution_volume_ml": 50.0,
+  "targets": [
+    {
+      "name": "nickel oxide",
+      "kind": "metal_oxide",
+      "basis": "support_relative",
+      "loading_percent": 12.0,
+      "active_formula": "NiO",
+      "precursor": {
+        "formula": "Ni(NO3)2·6H2O",
+        "target_element": "Ni",
+        "purity_fraction": 1.0
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,87 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "impregcalc"
+version = "0.1.0"
+description = "Explicit supported-catalyst impregnation recipe calculations."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [{name = "Hyun Dong Kim"}]
+keywords = [
+  "catalysis",
+  "catalyst-preparation",
+  "impregnation",
+  "stoichiometry",
+  "chemical-engineering",
+  "research-software",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Chemistry",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+gui = []
+xlsx = ["openpyxl>=3.1"]
+plot = ["matplotlib>=3.7"]
+all = ["matplotlib>=3.7", "openpyxl>=3.1"]
+dev = [
+  "build>=1.2",
+  "mypy>=1.11",
+  "openpyxl>=3.1",
+  "pytest>=8.0",
+  "pytest-cov>=5.0",
+  "ruff>=0.6",
+  "types-openpyxl>=3.1",
+  "twine>=5.1",
+]
+
+[project.scripts]
+impregcalc = "impregcalc.cli:main"
+impregcalc-gui = "impregcalc.gui:main"
+
+[project.urls]
+Homepage = "https://github.com/hdkim99/ImpregCalc"
+Repository = "https://github.com/hdkim99/ImpregCalc"
+Issues = "https://github.com/hdkim99/ImpregCalc/issues"
+Documentation = "https://github.com/hdkim99/ImpregCalc#readme"
+Releases = "https://github.com/hdkim99/ImpregCalc/releases"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/impregcalc"]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config"
+testpaths = ["tests"]
+markers = [
+  "scientific: hand-calculated or scientific regression test",
+  "integration: cross-layer integration test",
+  "gui: GUI/controller lifecycle and wiring test",
+  "macos: macOS-specific smoke test",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["impregcalc"]
+follow_imports = "skip"

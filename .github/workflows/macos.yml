@@ -1,0 +1,95 @@
+name: macOS GUI compatibility
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: impregcalc-macos-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  macos:
+    name: ${{ matrix.label }} / Python ${{ matrix.python }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: macos-15
+            python: "3.10"
+            architecture: arm64
+          - label: macos-15-intel
+            python: "3.13"
+            architecture: x86_64
+    runs-on: ${{ matrix.label }}
+    timeout-minutes: 35
+    env:
+      MPLBACKEND: Agg
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Confirm OS, architecture, Tk, and absence of Qt
+        env:
+          EXPECTED_ARCH: ${{ matrix.architecture }}
+        run: |
+          test "$(uname -m)" = "$EXPECTED_ARCH"
+          sw_vers
+          python -c 'import platform, tkinter; print(platform.python_version(), tkinter.TkVersion)'
+          python - <<'PY'
+          import importlib.util
+          for name in ("PyQt5", "PyQt6", "PySide2", "PySide6"):
+              assert importlib.util.find_spec(name) is None, name
+          PY
+      - name: Install source in a virtual environment
+        run: |
+          python -m venv "$RUNNER_TEMP/impregcalc-macos"
+          "$RUNNER_TEMP/impregcalc-macos/bin/python" -m pip install --upgrade pip
+          "$RUNNER_TEMP/impregcalc-macos/bin/python" -m pip install -e ".[dev,plot]"
+          "$RUNNER_TEMP/impregcalc-macos/bin/python" -m pip check
+      - name: Scientific, CLI, and GUI-import tests
+        run: |
+          py="$RUNNER_TEMP/impregcalc-macos/bin/python"
+          "$py" -m pytest tests/unit tests/integration tests/gui
+          "$py" -m impregcalc.cli validate examples/co_ru_iwi.json
+      - name: Real Tk window workflow and normal process exit
+        run: |
+          py="$RUNNER_TEMP/impregcalc-macos/bin/python"
+          "$py" tests/gui_widget_smoke.py "$RUNNER_TEMP/macos-gui-recipe.md"
+          test -s "$RUNNER_TEMP/macos-gui-recipe.md"
+      - name: Explicit Agg plot backend and export
+        run: |
+          py="$RUNNER_TEMP/impregcalc-macos/bin/python"
+          "$py" -m impregcalc.cli calculate examples/co_ru_iwi.json \
+            --output "$RUNNER_TEMP/macos-recipe.xlsx" \
+            --plot "$RUNNER_TEMP/macos-recipe.pdf"
+          "$py" -c 'import matplotlib; assert "agg" in matplotlib.get_backend().lower()'
+          test -s "$RUNNER_TEMP/macos-recipe.xlsx"
+          test -s "$RUNNER_TEMP/macos-recipe.pdf"
+      - name: Build and clean-wheel installation
+        run: |
+          py="$RUNNER_TEMP/impregcalc-macos/bin/python"
+          "$py" -m build
+          "$py" -m twine check dist/*
+          python -m venv "$RUNNER_TEMP/impregcalc-wheel"
+          wheel_py="$RUNNER_TEMP/impregcalc-wheel/bin/python"
+          "$wheel_py" -m pip install dist/*.whl
+          "$wheel_py" -m pip check
+          "$wheel_py" -c 'import impregcalc, sys; assert "tkinter" not in sys.modules'
+          "$RUNNER_TEMP/impregcalc-wheel/bin/impregcalc" calculate \
+            examples/co_ru_iwi.json --output "$RUNNER_TEMP/wheel-recipe.md"
+          "$wheel_py" tests/gui_widget_smoke.py "$RUNNER_TEMP/wheel-gui.md"
+          test -s "$RUNNER_TEMP/wheel-recipe.md"
+          test -s "$RUNNER_TEMP/wheel-gui.md"
+

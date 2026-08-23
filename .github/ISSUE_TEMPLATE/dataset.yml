@@ -1,0 +1,27 @@
+name: Real dataset compatibility
+description: Propose a public catalyst-preparation record for validation or compatibility.
+title: "[Dataset]: "
+labels: [dataset]
+body:
+  - type: markdown
+    attributes:
+      value: "Only public, licensed data. Never attach unpublished or confidential laboratory records."
+  - type: input
+    id: doi
+    attributes:
+      label: DOI or stable public URL
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: Dataset license
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Files, checksum, and proposed validation scope
+    validations:
+      required: true
+

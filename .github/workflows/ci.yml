@@ -1,0 +1,170 @@
+name: DGX CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: impregcalc-dgx-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  required:
+    name: DGX ARM64 / required
+    # Persistent research hardware may only execute trusted owner-authored code.
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.actor == github.repository_owner &&
+       github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: [self-hosted, Linux, ARM64, dgx-spark]
+    timeout-minutes: 60
+    env:
+      PIP_NO_CACHE_DIR: "1"
+      MPLBACKEND: Agg
+      IMPREGCALC_CI_VENV: impregcalc-ci-${{ github.run_id }}-${{ github.run_attempt }}
+      IMPREGCALC_WHEEL_VENV: impregcalc-wheel-${{ github.run_id }}-${{ github.run_attempt }}
+      IMPREGCALC_CI_OUTPUT: impregcalc-output-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          clean: true
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.13"
+      - name: Configure validated shared Tk and Xvfb runtime
+        env:
+          IMPREGCALC_GUI_RUNTIME: /opt/catalysttwin-actions/shared-gui-runtime
+        run: |
+          set -eu
+          runtime="$IMPREGCALC_GUI_RUNTIME"
+          bin_dir="$runtime/usr/bin"
+          lib_dir="$runtime/usr/lib/aarch64-linux-gnu"
+          tk_dir="$runtime/usr/share/tcltk/tk8.6"
+          test -d "$bin_dir"
+          test -d "$lib_dir"
+          test -d "$tk_dir"
+          export PATH="$bin_dir:$PATH"
+          export LD_LIBRARY_PATH="$lib_dir${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+          export TK_LIBRARY="$tk_dir"
+          printf '%s\n' "$bin_dir" >> "$GITHUB_PATH"
+          {
+            printf 'LD_LIBRARY_PATH=%s\n' "$LD_LIBRARY_PATH"
+            printf 'TK_LIBRARY=%s\n' "$TK_LIBRARY"
+          } >> "$GITHUB_ENV"
+          command -v Xvfb
+          command -v xvfb-run
+          python -c 'import tkinter; print(tkinter.TkVersion)'
+      - name: Create isolated environments
+        run: |
+          python -m venv "$RUNNER_TEMP/$IMPREGCALC_CI_VENV"
+          python -m venv "$RUNNER_TEMP/$IMPREGCALC_WHEEL_VENV"
+          mkdir -p "$RUNNER_TEMP/$IMPREGCALC_CI_OUTPUT"
+      - name: Install project and development dependencies
+        run: |
+          "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m pip install --upgrade pip
+          "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m pip install -e ".[dev,plot]"
+          "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m pip check
+      - name: Check formatting
+        run: "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m ruff format --check .
+      - name: Lint
+        run: "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m ruff check .
+      - name: Type check
+        run: "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m mypy src
+      - name: Unit, scientific, integration, and import-isolation tests
+        run: "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m pytest
+      - name: CLI and example workflow
+        run: |
+          py="$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python"
+          "$py" -m impregcalc.cli formula 'Co(NO3)2·6H2O'
+          "$py" -m impregcalc.cli validate examples/co_ru_iwi.json
+          "$py" -m impregcalc.cli calculate examples/co_ru_iwi.json \
+            --output "$RUNNER_TEMP/$IMPREGCALC_CI_OUTPUT/recipe.xlsx" \
+            --plot "$RUNNER_TEMP/$IMPREGCALC_CI_OUTPUT/recipe.svg"
+          test -s "$RUNNER_TEMP/$IMPREGCALC_CI_OUTPUT/recipe.xlsx"
+          test -s "$RUNNER_TEMP/$IMPREGCALC_CI_OUTPUT/recipe.svg"
+      - name: Wired GUI calculation, export, close, and exit
+        run: |
+          xvfb-run -a "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" \
+            tests/gui_widget_smoke.py \
+            "$RUNNER_TEMP/$IMPREGCALC_CI_OUTPUT/gui-recipe.md"
+          test -s "$RUNNER_TEMP/$IMPREGCALC_CI_OUTPUT/gui-recipe.md"
+      - name: Build and validate distributions
+        run: |
+          py="$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python"
+          "$py" -m build
+          "$py" -m twine check dist/*
+      - name: Verify clean wheel without GUI or plotting dependencies
+        run: |
+          py="$RUNNER_TEMP/$IMPREGCALC_WHEEL_VENV/bin/python"
+          "$py" -m pip install --upgrade pip
+          "$py" -m pip install dist/*.whl
+          "$py" -m pip check
+          "$py" - <<'PY'
+          import importlib.metadata
+          import platform
+          import sys
+          import impregcalc
+
+          assert platform.machine().lower() in {"aarch64", "arm64"}
+          assert impregcalc.__version__ == importlib.metadata.version("impregcalc")
+          assert "tkinter" not in sys.modules
+          assert "matplotlib" not in sys.modules
+          print(platform.machine(), impregcalc.__version__, impregcalc.__file__)
+          PY
+          "$RUNNER_TEMP/$IMPREGCALC_WHEEL_VENV/bin/impregcalc" --help
+          "$RUNNER_TEMP/$IMPREGCALC_WHEEL_VENV/bin/impregcalc" calculate \
+            examples/co_ru_iwi.json \
+            --output "$RUNNER_TEMP/$IMPREGCALC_CI_OUTPUT/wheel-recipe.md"
+          xvfb-run -a "$py" tests/gui_widget_smoke.py \
+            "$RUNNER_TEMP/$IMPREGCALC_CI_OUTPUT/wheel-gui.md"
+      - name: Clean isolated files and verify checkout
+        if: always()
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          import shutil
+
+          runner_temp = Path(os.environ["RUNNER_TEMP"]).resolve()
+          workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
+          for variable in (
+              "IMPREGCALC_CI_VENV",
+              "IMPREGCALC_WHEEL_VENV",
+              "IMPREGCALC_CI_OUTPUT",
+          ):
+              target = (runner_temp / os.environ[variable]).resolve()
+              if runner_temp not in target.parents:
+                  raise RuntimeError(f"Refusing to clean outside runner temp: {target}")
+              shutil.rmtree(target, ignore_errors=True)
+          for relative in (
+              "build",
+              "dist",
+              ".mypy_cache",
+              ".pytest_cache",
+              ".ruff_cache",
+              ".coverage",
+              "htmlcov",
+          ):
+              target = (workspace / relative).resolve()
+              if workspace not in target.parents:
+                  raise RuntimeError(f"Refusing to clean outside workspace: {target}")
+              if target.is_dir():
+                  shutil.rmtree(target)
+              elif target.exists():
+                  target.unlink()
+          for target in workspace.rglob("__pycache__"):
+              if workspace in target.resolve().parents:
+                  shutil.rmtree(target)
+          PY
+          test -z "$(git status --porcelain)"
+

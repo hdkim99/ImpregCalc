@@ -1,0 +1,26 @@
+name: Scientific result question
+description: Ask about an equation, convention, unit, assumption, or numerical result.
+title: "[Science]: "
+labels: [scientific-question]
+body:
+  - type: markdown
+    attributes:
+      value: "Use a minimal non-confidential example. Do not post unpublished or proprietary data."
+  - type: textarea
+    id: definition
+    attributes:
+      label: Loading definition, units, and assumptions
+      description: State target quantity and denominator explicitly.
+    validations:
+      required: true
+  - type: textarea
+    id: calculation
+    attributes:
+      label: Input and observed result
+    validations:
+      required: true
+  - type: input
+    id: reference
+    attributes:
+      label: Relevant publication or reference
+

@@ -1,0 +1,35 @@
+{
+  "support_name": "gamma-Al2O3",
+  "support_mass_g": 8.0,
+  "method": "incipient_wetness",
+  "pore_volume_ml_g": 0.72,
+  "cycles": 2,
+  "targets": [
+    {
+      "name": "cobalt",
+      "kind": "elemental_metal",
+      "basis": "final_catalyst",
+      "loading_percent": 15.0,
+      "active_formula": "Co",
+      "precursor": {
+        "formula": "Co(NO3)2·6H2O",
+        "target_element": "Co",
+        "purity_fraction": 0.98
+      }
+    }
+  ],
+  "promoters": [
+    {
+      "name": "ruthenium promoter",
+      "target_element": "Ru",
+      "reference_target": "cobalt",
+      "atomic_ratio_to_reference": 0.01,
+      "precursor": {
+        "formula": "RuCl3",
+        "target_element": "Ru",
+        "purity_fraction": 0.99
+      }
+    }
+  ]
+}
+

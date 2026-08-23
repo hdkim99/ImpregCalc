@@ -1,0 +1,27 @@
+name: Bug report
+description: Report reproducible software behavior that is not a scientific-definition question.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not upload confidential or unpublished research data to this public issue."
+  - type: input
+    id: version
+    attributes:
+      label: ImpregCalc version
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal reproduction and full error output
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+

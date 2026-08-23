@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use ImpregCalc, please cite this software and the scientific references documented in the repository."
+title: "ImpregCalc"
+type: software
+version: 0.1.0
+date-released: 2026-08-23
+authors:
+  - family-names: Kim
+    given-names: Hyun Dong
+repository-code: "https://github.com/hdkim99/ImpregCalc"
+url: "https://github.com/hdkim99/ImpregCalc"
+license: MIT
+keywords:
+  - catalysis
+  - catalyst preparation
+  - impregnation
+  - stoichiometry
+

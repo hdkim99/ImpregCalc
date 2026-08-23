@@ -1,0 +1,19 @@
+name: Feature request
+description: Propose a focused preparation workflow or usability improvement.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include confidential research data. Scientific features need definitions and references."
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Research workflow and current limitation
+    validations:
+      required: true
+  - type: textarea
+    id: science
+    attributes:
+      label: Scientific definition, validity range, and reference
+
