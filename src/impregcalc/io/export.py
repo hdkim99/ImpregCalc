@@ -62,7 +62,7 @@ def format_markdown(result: RecipeResult) -> str:
             lines.extend(
                 [
                     "",
-                    "| Cycle | Fraction | Precursor / g | Solution / mL |",
+                    "| Cycle | Fraction | Precursor / g | Shared solution / mL |",
                     "|---:|---:|---:|---:|",
                 ]
             )
@@ -134,7 +134,7 @@ def _write_xlsx(result: RecipeResult, path: Path) -> None:
     for component_row in rows:
         components.append(list(component_row.values()))
     cycles = workbook.create_sheet("Cycles")
-    cycles.append(["Component", "Cycle", "Fraction", "Precursor / g", "Solution / mL"])
+    cycles.append(["Component", "Cycle", "Fraction", "Precursor / g", "Shared solution / mL"])
     for requirement in result.requirements:
         for cycle in requirement.cycle_portions:
             cycles.append(

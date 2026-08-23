@@ -212,7 +212,7 @@ class RecipeResult:
                             "cycle": cycle.cycle,
                             "fraction": cycle.fraction,
                             "precursor_mass_g": cycle.precursor_mass_g,
-                            "solution_volume_ml": cycle.solution_volume_ml,
+                            "shared_solution_volume_ml": cycle.solution_volume_ml,
                         }
                         for cycle in row.cycle_portions
                     ],

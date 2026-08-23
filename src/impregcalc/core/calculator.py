@@ -280,6 +280,11 @@ def calculate(request: RecipeRequest) -> RecipeResult:
             warnings.append(
                 "An explicit solution volume overrides the nominal pore-volume product."
             )
+    if len(requirements) > 1:
+        warnings.append(
+            "For co-impregnation, each cycle's solution volume is shared by all precursor "
+            "rows and must not be summed across components."
+        )
     assumptions = (
         "Loading arithmetic assumes quantitative retention/conversion of the named target "
         "component.",

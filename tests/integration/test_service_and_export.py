@@ -28,6 +28,7 @@ def test_json_round_trip_has_units_and_definitions(tmp_path: Path) -> None:
     assert payload["schema_version"] == "1.0"
     assert "selected_solution_volume_ml" in payload
     assert payload["requirements"][0]["basis"].startswith("15 wt% elemental_metal")
+    assert "shared_solution_volume_ml" in payload["requirements"][0]["cycles"][0]
     assert payload["warnings"]
 
 
