@@ -138,9 +138,9 @@ identical pore distributions, crystallite sizes, or catalytic behavior.
    (1998) 129–137. <https://doi.org/10.1016/S0920-5861(98)00043-1>.
 4. T. Prohaska et al., “Standard atomic weights of the elements 2021 (IUPAC
    Technical Report),” *Pure and Applied Chemistry*. IUPAC table and report link:
-   <https://iupac.qmul.ac.uk/AtWt/AtWt21.html>.
+   <https://iupac.qmul.ac.uk/AtWt/AtWt21.html>;
+   <https://doi.org/10.1515/pac-2019-0603>.
 
 References 1–3 establish preparation-method terminology and physical limitations.
 The loading, purity, atomic-ratio, and mass-balance equations above are direct
 stoichiometric derivations rather than empirical correlations.
-

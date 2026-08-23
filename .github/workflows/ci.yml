@@ -75,13 +75,17 @@ jobs:
           "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m pip install -e ".[dev,plot]"
           "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m pip check
       - name: Check formatting
-        run: "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m ruff format --check .
+        run: |
+          "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m ruff format --check .
       - name: Lint
-        run: "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m ruff check .
+        run: |
+          "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m ruff check .
       - name: Type check
-        run: "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m mypy src
+        run: |
+          "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m mypy src
       - name: Unit, scientific, integration, and import-isolation tests
-        run: "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m pytest
+        run: |
+          "$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python" -m pytest
       - name: CLI and example workflow
         run: |
           py="$RUNNER_TEMP/$IMPREGCALC_CI_VENV/bin/python"
@@ -167,4 +171,3 @@ jobs:
                   shutil.rmtree(target)
           PY
           test -z "$(git status --porcelain)"
-
