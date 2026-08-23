@@ -25,9 +25,9 @@ except ImportError as exc:  # pragma: no cover - depends on external Python dist
     raise RuntimeError(
         "ImpregCalc GUI could not import Tkinter. "
         f"Python={platform.python_version()}, OS={platform.platform()}. "
-        "Install a Python distribution that includes Tcl/Tk, then run "
-        "`python -m impregcalc.gui`. The `[gui]` extra provides optional plotting, "
-        "but cannot add Tcl/Tk to Python itself."
+        'Install the package with `pip install "impregcalc[gui]"` and use a Python '
+        "distribution that includes Tcl/Tk, then run `python -m impregcalc.gui`. "
+        "The GUI extra records installation intent but cannot add Tcl/Tk to Python itself."
     ) from exc
 
 
