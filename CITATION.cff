@@ -3,7 +3,6 @@ message: "If you use ImpregCalc, please cite this software and the scientific re
 title: "ImpregCalc"
 type: software
 version: 0.1.0
-date-released: 2026-08-23
 authors:
   - family-names: Kim
     given-names: Hyun Dong
@@ -15,4 +14,3 @@ keywords:
   - catalyst preparation
   - impregnation
   - stoichiometry
-
