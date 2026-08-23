@@ -1,0 +1,49 @@
+{
+  "case_id": "IC-PUB-004",
+  "source_recipe": {
+    "support_name": "Puralox SCCA-5/170 Al2O3",
+    "support_mass_g": 1.0,
+    "support_mass_is_reported": false,
+    "normalization_note": "Published weight contents and pore volume are scale-independent; 1.000 g dry support is used for the regression.",
+    "method": "incipient_wetness",
+    "pore_volume_ml_g": 0.477,
+    "solution_volume_ml": null,
+    "targets": [
+      {
+        "name": "cobalt",
+        "kind": "elemental_metal",
+        "basis": "final_catalyst",
+        "loading_percent": 10.0,
+        "target_element": "Co",
+        "source_precursor_formula": "Co(NO3)2*6H2O",
+        "normalized_precursor_formula": "Co(NO3)2·6H2O",
+        "purity_fraction": null
+      },
+      {
+        "name": "platinum",
+        "kind": "elemental_metal",
+        "basis": "final_catalyst",
+        "loading_percent": 0.05,
+        "target_element": "Pt",
+        "source_precursor_formula": "Pt(NH3)4(NO3)2",
+        "normalized_precursor_formula": "Pt(NH3)4(NO3)2",
+        "purity_fraction": null
+      }
+    ],
+    "cycles": 1
+  },
+  "expected_pure_equivalent": {
+    "final_formulated_mass_g": 1.1117287381878822,
+    "nominal_iwi_volume_ml": 0.477,
+    "components": {
+      "cobalt": {
+        "active_component_mass_g": 0.11117287381878822,
+        "pure_precursor_mass_g": 0.5490076476746413
+      },
+      "platinum": {
+        "active_component_mass_g": 0.0005558643690939412,
+        "pure_precursor_mass_g": 0.0011033174301484463
+      }
+    }
+  }
+}

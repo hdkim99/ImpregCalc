@@ -105,8 +105,12 @@ IWI volume, wet impregnation, cycle splits, invalid compositions, exports, CLI/c
 import isolation, and GUI calculation/export/close lifecycle. See
 [`docs/validation.md`](docs/validation.md).
 
-Real-data validation is **pending**. The repository does not label a synthetic or
-manually constructed recipe as a literature-data validation.
+Published-method arithmetic regressions cover support-relative Fe from nitrate
+nonahydrate (IC-PUB-002), final-basis Nb2O5 from NbCl5 with nominal/ICP values kept
+separate (IC-PUB-003), and coupled final-basis Co/Pt co-impregnation (IC-PUB-004).
+A Pd(acac)2 paper with an unspecified denominator is reported as a two-convention
+definition audit, not forced into a gold case. This validates recipe arithmetic, not
+laboratory reproducibility, precursor retention, morphology, or catalytic behavior.
 
 ## Scope and limitations
 

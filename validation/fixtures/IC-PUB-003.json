@@ -1,0 +1,36 @@
+{
+  "case_id": "IC-PUB-003",
+  "source_recipe": {
+    "support_name": "gamma-Al2O3 nanofibers",
+    "support_mass_g": 0.5,
+    "support_mass_is_reported": true,
+    "method": "incipient_wetness",
+    "pore_volume_ml_g": 0.63,
+    "solution_volume_ml": null,
+    "targets": [
+      {
+        "name": "niobia",
+        "kind": "metal_oxide",
+        "basis": "final_catalyst",
+        "loading_percent": 10.0,
+        "active_formula": "Nb2O5",
+        "target_element": "Nb",
+        "source_precursor_formula": "NbCl5",
+        "normalized_precursor_formula": "NbCl5",
+        "purity_fraction": null
+      }
+    ],
+    "cycles": 1
+  },
+  "reported_observations": {
+    "controlled_nb2o5_loading_percent": 10.0,
+    "icp_aes_real_nb2o5_loading_percent": 4.7
+  },
+  "expected_pure_equivalent": {
+    "final_formulated_mass_g": 0.5555555555555556,
+    "active_component_mass_g": 0.05555555555555556,
+    "precursor_molar_mass_g_mol": 270.15637,
+    "pure_precursor_mass_g": 0.11292889531525474,
+    "nominal_iwi_volume_ml": 0.315
+  }
+}

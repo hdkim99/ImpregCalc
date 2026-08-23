@@ -1,0 +1,31 @@
+{
+  "case_id": "IC-PUB-002",
+  "source_recipe": {
+    "support_name": "gamma-Al2O3",
+    "support_mass_g": 1.0,
+    "support_mass_is_reported": false,
+    "normalization_note": "The publication defines a scale-independent support-relative loading; 1.000 g dry support is used for the regression.",
+    "method": "incipient_wetness",
+    "pore_volume_ml_g": 0.47,
+    "solution_volume_ml": null,
+    "targets": [
+      {
+        "name": "iron",
+        "kind": "elemental_metal",
+        "basis": "support_relative",
+        "loading_percent": 3.0,
+        "target_element": "Fe",
+        "source_precursor_formula": "Fe(NO3)3 nonahydrate",
+        "normalized_precursor_formula": "Fe(NO3)3·9H2O",
+        "purity_fraction": null
+      }
+    ],
+    "cycles": 1
+  },
+  "expected_pure_equivalent": {
+    "active_component_mass_g": 0.03,
+    "precursor_molar_mass_g_mol": 403.992,
+    "pure_precursor_mass_g": 0.21702497985495567,
+    "nominal_iwi_volume_ml": 0.47
+  }
+}

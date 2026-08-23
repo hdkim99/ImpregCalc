@@ -1,0 +1,32 @@
+{
+  "case_id": "IC-PUB-001",
+  "source_recipe": {
+    "support_name": "PMS mesoporous silica",
+    "support_mass_g": 1.0,
+    "support_mass_is_reported": true,
+    "method": "incipient_wetness",
+    "pore_volume_ml_g": 1.16,
+    "solution_volume_ml": 5.0,
+    "targets": [
+      {
+        "name": "palladium",
+        "kind": "elemental_metal",
+        "basis": null,
+        "basis_interpretations": ["final_catalyst", "support_relative"],
+        "loading_percent": 1.0,
+        "target_element": "Pd",
+        "source_precursor_formula": "Pd(acac)2",
+        "normalized_precursor_formula": "C10H14O4Pd",
+        "formula_normalization_source": "PubChem CID 5486778",
+        "formula_normalization_url": "https://pubchem.ncbi.nlm.nih.gov/compound/5486778",
+        "purity_fraction": null
+      }
+    ],
+    "cycles": 1
+  },
+  "reported_observations": {
+    "precursor_mass_g": 0.03,
+    "reported_loading_percent": 1.0,
+    "loading_basis": "not_reported"
+  }
+}

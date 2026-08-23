@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "updated_on": "2026-08-23",
+  "entries": [
+    {
+      "case_id": "IC-PUB-001",
+      "classification": "definition_ambiguity_and_liquid_volume_discrepancy",
+      "decision": "dual_interpretation_only",
+      "reasons": [
+        "The publication reports 1.0 wt% Pd but does not identify the denominator.",
+        "For 1.0 g PMS the reported 5.0 mL liquid is 4.31 times the 1.16 mL nominal pore-volume product, despite the incipient-wetness label.",
+        "The reported 0.030 g Pd(acac)2 corresponds to 1.0480 wt% Pd/support or 1.0371 wt% Pd/(support + retained Pd) with ImpregCalc atomic weights, so it is consistent with a rounded 1.0 wt% statement but does not resolve the convention."
+      ],
+      "software_action": "No parser or scientific-core change. Pd(acac)2 is normalized outside the core to C10H14O4Pd using PubChem CID 5486778, and both denominator scenarios are reported."
+    },
+    {
+      "case_id": "IC-PUB-002",
+      "classification": "reported_solution_volume_absent",
+      "decision": "accept_precursor_and_nominal_iwi_regression",
+      "reasons": [
+        "The paper gives the support-relative loading definition and support pore volume but describes liquid addition only by paste-like consistency.",
+        "The 0.47 mL/g pore-volume product is therefore a nominal planning volume, not a claim about the liquid actually used."
+      ],
+      "software_action": "No core change. Commercial mass is not validated because precursor assay is absent."
+    },
+    {
+      "case_id": "IC-PUB-003",
+      "classification": "nominal_vs_icp_difference",
+      "decision": "accept_nominal_recipe_regression_only",
+      "reasons": [
+        "For the controlled 10 wt% Nb2O5 recipe, ICP-AES reports 4.7 wt% real content.",
+        "ImpregCalc performs requested recipe arithmetic and does not model retention, deposition, digestion, or analytical recovery."
+      ],
+      "software_action": "The regression targets controlled 10 wt%; the 4.7 wt% observation is stored separately and is never fed back as a preparation target."
+    },
+    {
+      "case_id": "IC-PUB-004",
+      "classification": "commercial_assay_and_measured_amounts_absent",
+      "decision": "accept_theoretical_pure_equivalent_regression",
+      "reasons": [
+        "Elemental final-catalyst loadings and precursor formulas are sufficiently defined, but assays and weighed amounts are not reported.",
+        "The published pore volume supports nominal IWI planning, but no measured liquid volume is reported."
+      ],
+      "software_action": "Validate coupled mass balance and pure-equivalent precursor masses only."
+    },
+    {
+      "case_id": "IC-PUB-005",
+      "classification": "insufficient_recipe_definition",
+      "decision": "reject_from_numeric_regression",
+      "reasons": [
+        "The nominal Co/Pt/Si percentages do not state a loading denominator.",
+        "Support mass, individual cycle allocation, precursor assays, and actual liquid volumes are absent."
+      ],
+      "software_action": "No guessed preprocessing and no core change."
+    },
+    {
+      "case_id": "IC-PUB-006",
+      "classification": "formula_and_basis_ambiguity",
+      "decision": "reject_from_numeric_regression",
+      "reasons": [
+        "The printed Ni(NO3)*6H2O and Mg(NO3)*6H2O notations are not silently corrected to different neutral salts.",
+        "The loading denominator and the amount assigned to each impregnation cycle are not specified.",
+        "Support mass, pore volume, and solution volume are absent."
+      ],
+      "software_action": "No hydrate-parser change: dot hydration works as designed, while chemical-charge plausibility is outside the syntax parser's stated scope."
+    }
+  ]
+}

@@ -10,7 +10,9 @@ while scientific definition corrections may appear in patch releases.
 - Hydrate-dot formula parser and precursor assay correction.
 - Co-impregnation, atomic-ratio promoter, IWI/wet liquid planning, and cycle splits.
 - Python API, CLI, Tkinter GUI, JSON/Markdown/CSV/XLSX and figure export.
+- Published-method arithmetic regressions IC-PUB-002 through IC-PUB-004, a
+  definition-preserving Pd audit (IC-PUB-001), and machine-readable provenance and
+  failure records.
 
 The conditions for 1.0.0 are not met. They require external-user experience,
 definition-stable workflows, and suitable public experimental validation.
-
