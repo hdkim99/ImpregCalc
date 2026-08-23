@@ -24,21 +24,20 @@ and in every exported result instead of silently guessing them.
 
 ## Install
 
-ImpregCalc is currently source-installable while the first PyPI release is prepared:
+Install the released core and CLI from PyPI:
 
 ```bash
-git clone https://github.com/hdkim99/ImpregCalc.git
-cd ImpregCalc
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install .
+python -m pip install impregcalc
 ```
 
 XLSX and publication-figure export are optional:
 
 ```bash
-python -m pip install ".[xlsx,plot]"
+python -m pip install "impregcalc[xlsx,plot]"
 ```
+
+For development from the repository, create a virtual environment and install with
+`python -m pip install -e ".[dev,plot]"`.
 
 The GUI uses Python's Tkinter/ttk. On macOS, use a Python distribution built with
 Tcl/Tk support. `python -c "import tkinter"` should succeed.
