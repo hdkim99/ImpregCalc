@@ -36,7 +36,7 @@ class RecipeApp:
 
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
-        self.root.title("ImpregCalc 0.1.0")
+        self.root.title("ImpregCalc 0.1.1")
         self.root.minsize(850, 620)
         self._last_result: RecipeResult | None = None
         self.values: dict[str, tk.StringVar] = {

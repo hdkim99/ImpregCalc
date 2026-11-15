@@ -3,7 +3,12 @@
 All notable changes will be recorded here. ImpregCalc follows semantic versioning
 while scientific definition corrections may appear in patch releases.
 
-## 0.1.0 — unreleased
+## 0.1.1
+
+- Publish with the patched PyPI Trusted Publishing action (v1.14.3,
+  GHSA-5xjx-3w67-w9x9). Scientific calculations are unchanged.
+
+## 0.1.0
 
 - Initial elemental-metal, metal-oxide, and precursor loading engine.
 - Final-catalyst and support-relative mass-balance conventions.
